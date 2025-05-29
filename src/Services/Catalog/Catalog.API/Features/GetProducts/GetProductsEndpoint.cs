@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Catalog.API.Features.GetProducts;
+﻿namespace Catalog.API.Features.GetProducts;
 
 public record GetProductsRequest(
     int PageNumber = 1,

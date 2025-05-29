@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Catalog.API.Features.CreateProduct;
+﻿namespace Catalog.API.Features.CreateProduct;
 
 public record CreateProductRequest(
     string Name,
