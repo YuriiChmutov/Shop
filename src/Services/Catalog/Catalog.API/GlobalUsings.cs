@@ -12,4 +12,3 @@ global using Mapster;
 global using Marten;
 global using MediatR;
 global using Microsoft.AspNetCore.Mvc;
-global using Weasel.Core;
