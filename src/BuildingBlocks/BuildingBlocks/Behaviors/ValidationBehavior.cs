@@ -1,7 +1,6 @@
-﻿using FluentValidation;
+﻿using BuildingBlocks.CQRS;
+using FluentValidation;
 using MediatR;
-using System.ComponentModel.DataAnnotations;
-using BuildingBlocks.CQRS;
 using ValidationException = FluentValidation.ValidationException;
 
 namespace BuildingBlocks.Behaviors;

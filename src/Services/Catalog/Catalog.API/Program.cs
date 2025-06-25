@@ -1,5 +1,3 @@
-using BuildingBlocks.Behaviors;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
@@ -18,10 +16,13 @@ builder.Services.AddMarten(opt =>
     opt.Connection(builder.Configuration.GetConnectionString("Database")!);
 }).UseLightweightSessions();
 
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
 var app = builder.Build();
 
+// Configure the HTTP request pipeline
 app.MapCarter();
 
-// Configure the HTTP request pipeline
+app.UseExceptionHandler(opt => { });
 
 app.Run();

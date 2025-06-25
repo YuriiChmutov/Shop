@@ -34,7 +34,7 @@ internal class UpdateProductCommandHandler(IDocumentSession session, ILogger<Upd
 
         var dbProduct = await session.LoadAsync<Product>(command.Id, cancellationToken);
 
-        if (dbProduct == null) throw new ProductNotFoundException();
+        if (dbProduct == null) throw new ProductNotFoundException(command.Id);
 
         try
         {
