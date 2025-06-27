@@ -1,8 +1,8 @@
 ﻿namespace Catalog.API.Features.GetProducts;
 
 public record GetProductsQuery(
-    int PageNumber = 1,
-    int PageSize = 10
+    int? PageNumber = 1,
+    int? PageSize = 10
 ) : IQuery<GetProductsResult>;
 
 public record GetProductsResult(
@@ -16,9 +16,7 @@ public class GetProductsQueryHandler(IQuerySession session)
     {
         // get data from db
         var products = await session.Query<Product>()
-            .Skip((query.PageNumber - 1) * query.PageSize)
-            .Take(query.PageSize)
-            .ToListAsync(cancellationToken);
+            .ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? int.MaxValue, cancellationToken);
 
         return new GetProductsResult(products);
     }
