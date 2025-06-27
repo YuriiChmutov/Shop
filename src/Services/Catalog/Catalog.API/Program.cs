@@ -24,11 +24,15 @@ if (builder.Environment.IsDevelopment())
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
+builder.Services.AddHealthChecks().AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
 app.MapCarter();
 
 app.UseExceptionHandler(opt => { });
+
+app.UseHealthChecks("/health");
 
 app.Run();
