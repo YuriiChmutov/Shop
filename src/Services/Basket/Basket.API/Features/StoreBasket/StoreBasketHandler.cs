@@ -1,24 +1,24 @@
-﻿namespace Basket.API.Features.StoreBasket;
-
-public record StoreBasketCommand(ShoppingCart Cart) : ICommand<StoreBasketResult>;
-
-public record StoreBasketResult(string UserName);
-
-public class StoreBasketCommandValidator : AbstractValidator<StoreBasketCommand>
+﻿namespace Basket.API.Features.StoreBasket
 {
-    public StoreBasketCommandValidator()
+    public record StoreBasketCommand(ShoppingCart Cart) : ICommand<StoreBasketResult>;
+
+    public record StoreBasketResult(string UserName);
+
+    public class StoreBasketCommandValidator : AbstractValidator<StoreBasketCommand>
     {
-        RuleFor(basket => basket.Cart).NotNull().WithMessage("Cart can't be null");
-        RuleFor(basket => basket.Cart.UserName).NotEmpty().WithMessage("UserName is required");
+        public StoreBasketCommandValidator()
+        {
+            RuleFor(basket => basket.Cart).NotNull().WithMessage("Cart can't be null");
+            RuleFor(basket => basket.Cart.UserName).NotEmpty().WithMessage("UserName is required");
+        }
     }
-}
 
-public class StoreBasketCommandHandler : ICommandHandler<StoreBasketCommand, StoreBasketResult>
-{
-    public async Task<StoreBasketResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
+    public class StoreBasketCommandHandler(IBasketRepository repository) : ICommandHandler<StoreBasketCommand, StoreBasketResult>
     {
-        var cart = command.Cart;
-        // todo: store cart to db
-        return new StoreBasketResult("yuriich");
+        public async Task<StoreBasketResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
+        {
+            var basket = await repository.StoreBasket(command.Cart, cancellationToken);
+            return new StoreBasketResult(basket.UserName);
+        }
     }
 }

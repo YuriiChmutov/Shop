@@ -1,3 +1,6 @@
+    using BuildingBlocks.Exceptions.Handlers;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+
     var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
@@ -17,10 +20,19 @@ builder.Services.AddMarten(opt =>
     opt.Schema.For<ShoppingCart>().Identity(x => x.UserName);
 }).UseLightweightSessions();
 
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
 var app = builder.Build();
 
 // Configure pipeline
 
 app.MapCarter();
+app.UseExceptionHandler(opt => { });
+
+app.UseHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();
