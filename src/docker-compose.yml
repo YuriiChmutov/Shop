@@ -7,6 +7,9 @@ services:
   catalogdb:
     image: postgres
 
+  distributedcache:
+    image: redis
+
   basketdb:
     image: postgres
 
